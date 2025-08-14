@@ -17,7 +17,7 @@ KEYPAD = [
 ]
 
 # Define GPIO pins for rows and columns
-ROWS = [2, 3, 4,17]
+ROWS = [1, 16, 20, 21]
 COLS = [6, 13, 19, 26]
 RED = 14 
 GREEN = 15 

@@ -2,16 +2,16 @@ import time
 import spidev
 import RPi.GPIO as GPIO
 
-LED_PIN = 18
+LED_PIN = 14
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(LED_PIN, GPIO.OUT)
 
-pwm = GPIO.PWM(LED_PIN, 10000)
+pwm = GPIO.PWM(LED_PIN, 1000)
 pwm.start(0)
 
 spi = spidev.SpiDev()
 spi.open(0, 0)
-spi.max_speed_hz = 1000000
+spi.max_speed_hz = 10000
 
 def read_adc_ch0():
     cmd = [0b00000110, 0b00000000, 0b00000000]
@@ -42,15 +42,15 @@ try:
         print(adc_value)
         duty_cycle = (adc_value / 4095) * 100
         # print(duty_cycle)
-        if adc_value < 100:
-            pwm.ChangeDutyCycle(0)
+        if adc_value > 3900:
+            pwm.ChangeDutyCycle(100.0)
         # elif adc_value >= 3700:
         #     adc_value = adc_value - 3095
         #     pwm.ChangeDutyCycle((adc_value / 1000) * 100)
         else:
             pwm.ChangeDutyCycle(duty_cycle)
 
-        time.sleep(0.01)
+        time.sleep(0.08)
 
 except KeyboardInterrupt:
     pwm.stop()
